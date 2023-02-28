@@ -1,19 +1,18 @@
-// import { Button } from 'react-bootstrap'
-//import { Button } from "react-bootstrap";
 import React, { useState } from 'react';
 import './CreateNewBlog.css'
 const CreateNewBlog = () => {
   const [showForm, setShowForm] = useState(false);
-  const [image, setImage] = useState(null);
-  const [headline, setHeadline] = useState('');
+  const [image, setImage] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setImage(file);
+    // const file = event.target.files[0];
+    // setImage(file);
+    setImage(event.target.value)
 };
 
 const handleHeadlineChange = (event) => {
-    setHeadline(event.target.value);
+    setTitle(event.target.value);
 };
 
 const handleDescriptionChange = (event) => {
@@ -24,10 +23,31 @@ const handleDescriptionChange = (event) => {
 };
 
 const handleSubmit = (event) => {
-    event.preventDefault();
     // Handle form submission logic here
-    setShowForm(false)
-};
+    
+    let newBlogData={title,description,image}
+    console.log(newBlogData)
+  //     fetch("https://f2ae-182-74-85-106.ngrok.io/post", {
+  //   method: "POST",
+  //   mode:'no-cors',
+  //   headers: {
+  //     'Accept': 'application/json',
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body:JSON.stringify(newBlogData)
+  // }).then((resp)=>{
+  //   resp.json().then((result)=>
+  //   console.log(result)
+  //   )
+  //   })
+  fetch('https://f2ae-182-74-85-106.ngrok.io/post', {
+
+  method: 'POST', 
+  mode: 'no-cors', 
+  body: JSON.stringify(newBlogData)
+})
+setShowForm(false)
+  }
 
   const handleButtonClick = () => {
     setShowForm(true);
@@ -38,22 +58,22 @@ const handleSubmit = (event) => {
         <h1>Create your own blog</h1>
       </div>
       {showForm && (<div className="form-modal">
-        <form className="form-container" onSubmit={handleSubmit}>
+        <div className="form-container">
           <div>
-            <label htmlFor="image">Upload Image:</label>
-            <input type="file" id="image" name="image" onChange={handleImageChange} />
+            <label >Upload Image:</label>
+            <input type="text" id="image" value={image} onChange={handleImageChange} />
           </div>
           <div>
-            <label htmlFor="headline">Headline:</label>
-            <input type="text" id="headline" name="headline" value={headline} onChange={handleHeadlineChange} />
+            <label>Headline:</label>
+            <input type="text" id="headline" name="headline" value={title} onChange={handleHeadlineChange} />
           </div>
           <div>
             <label htmlFor="description">Description (max 1000 words):</label>
             <textarea id="description" name="description" value={description} onChange={handleDescriptionChange} />
           </div>
-          <button type="submit">Submit</button>
+          <button onClick={handleSubmit}>Submit</button>
           <button className='cancel' onClick={handleSubmit}>Cancel</button>
-        </form>
+        </div>
       </div>
 
       )}

@@ -3,11 +3,14 @@ import Card from "./Card";
 const Blog = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch("https://fbab-182-74-85-106.ngrok.io/allblogs")
+    fetch("https://f2ae-182-74-85-106.ngrok.io/allblogs",{
+      method:'GET',
+      moode:'no-cors'
+    })
     .then(result => result.json())
     .then((resp) => {
-        console.log(data)
         setData(resp)
+        console.log(resp)
     })
   }, []);
 
@@ -26,7 +29,7 @@ const Blog = () => {
               title={item.title}
               date={item.created}
             />
-          );
+          )
         })
       )}
     </div>
